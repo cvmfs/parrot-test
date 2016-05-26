@@ -1,5 +1,6 @@
 #!/bin/bash
 
+NATIVE=0
 PARROT_RUN=${PARROT_RUN:=${HOME}/parrot_run}
 export TOPDIR="$(pwd)"
 export WORKSPACE="${TOPDIR}/workspace"
@@ -25,4 +26,9 @@ fi
 mkdir -p "${WORKSPACE}"
 cd "${WORKSPACE}"
 [ -f "${TOPDIR}/${TEST}/setup.sh" ] && source "${TOPDIR}/${TEST}/setup.sh"
-exec ${PARROT_RUN} ${PARROT_OPTIONS} bash -c "${TOPDIR}/${TEST}/run.sh $*"
+
+if [ $NATIVE=1 ]; then
+  exec bash -c "${TOPDIR}/${TEST}/run.sh $*"
+else
+  exec ${PARROT_RUN} ${PARROT_OPTIONS} bash -c "${TOPDIR}/${TEST}/run.sh $*"
+fi
